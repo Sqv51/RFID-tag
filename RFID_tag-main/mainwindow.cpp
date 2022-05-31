@@ -155,6 +155,7 @@ void MainWindow::on_allremove_clicked()
 
 void MainWindow::on_connect_clicked()
 {
+
     QString port_name;
     port_name = ui->comPortBox->currentText();
 
@@ -170,6 +171,7 @@ void MainWindow::on_connect_clicked()
         serial1->setStopBits(QSerialPort::OneStop);
         serial1->setFlowControl(QSerialPort::NoFlowControl);
         ui->label->setText("Bağlantı KURULDU");
+        ui->connect->hide();
 
     }
 
@@ -192,6 +194,7 @@ void MainWindow::on_disconnect_clicked()
             serial1->close();
             serialDeviceIsConnected = false;
             ui->label->setText("Disconnected");
+            ui->connect->setHidden(false);
 
         }
         else
