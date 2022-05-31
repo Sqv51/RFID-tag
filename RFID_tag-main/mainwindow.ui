@@ -130,7 +130,7 @@ background-color: rgb(238, 238, 236);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">image: url(:/new/prefix1/Logos/logo_mobil-1.png);
-background-color: rgb(238, 238, 236);
+background-color: transparent;
 border-width: 1px;
 border-radius: 11px;
 border-color: #2082ff;
@@ -154,12 +154,8 @@ padding: 5px;a</string>
     </property>
     <property name="styleSheet">
      <string notr="true">image: url(:/new/prefix1/Logos/rfid.png);
-background-image: url();
-border-style: solid;
-border-width: 1px;
-border-radius: 11px;
-border-color: #2082ff;
-padding: 5px;a</string>
+background-color: transparent;
+</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>

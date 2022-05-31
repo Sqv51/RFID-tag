@@ -153,7 +153,7 @@ QToolTip
 /*-----QPushButton-----*/
 QPushButton
 {
-	background-color: #20afe7;
+        background-color: #20afe7;
 	color: #ffffff;
 	border-style: solid;
 	border-width: 1px;
@@ -306,11 +306,11 @@ QComboBox::drop-down
 
 QComboBox::down-arrow
 {
-	background-color: #383838;	
+        background-color: #20afe7;
     image: url(://arrow-down.png) 16px 16px;
-    width: 18px;
-    height: 18px;
-	border-left: 1px solid black;
+    width: 5px;
+    height: 5px;
+        border-left: 1px solid black;
 
 }
 
