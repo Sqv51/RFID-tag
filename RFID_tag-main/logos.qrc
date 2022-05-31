@@ -2,6 +2,7 @@
     <qresource prefix="/new/prefix1">
         <file>Logos/logo_mobil-1.png</file>
         <file>Logos/rfid.png</file>
+        <file>Logos/pngegg.png</file>
     </qresource>
     <qresource prefix="/new/style">
         <file>Irrorater.qss</file>

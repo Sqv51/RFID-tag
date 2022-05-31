@@ -3,6 +3,7 @@
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include <QDebug>
+#include <QMessageBox>
  QList<QSerialPortInfo> list;
  QSerialPort *serial1 = new QSerialPort;
  bool serialDeviceIsConnected = false;
@@ -67,53 +68,85 @@ void MainWindow::Read_Data()
 
 void MainWindow::on_add_clicked()
 {
-    QString addtag ="0201";
-    QByteArray bytes1 = QByteArray::fromHex(addtag.toLocal8Bit());
-    QString RFID =ui->rfiddata->toPlainText();
-    bytes1.append(QByteArray::fromHex(RFID.toLocal8Bit()));
-    uint16_t test;
-    test = CRC(bytes1,6);
-    uint8_t first[2];
-    first[0]= (0xFF)&(test>>8);
-    first[1]=(0xFF)&test;
-    bytes1.append(QByteArray::fromRawData((const char *)first,2));
-    qDebug()<<"giden data  = "<<bytes1;
-    serialWrite(bytes1);
-    qDebug()<<RFID;
+    if(ui->rfiddata->text().length() == 0){
+        qDebug("BOŞ");
+        QMessageBox msgBox; msgBox.setText(tr("Lütfen Boş Veri Göndermeyiniz"));
+        msgBox.addButton(tr("Tamam"), QMessageBox::NoRole);
+        msgBox.exec();
+    }
+
+    else{
+        QString addtag ="0202";
+        QByteArray bytes1 = QByteArray::fromHex(addtag.toLocal8Bit());
+        QString RFID =ui->rfiddata->text();
+        bytes1.append(QByteArray::fromHex(RFID.toLocal8Bit()));
+        uint16_t test;
+        test = CRC(bytes1,6);
+        uint8_t first[2];
+        first[0]= (0xFF)&(test>>8);
+        first[1]=(0xFF)&test;
+        bytes1.append(QByteArray::fromRawData((const char *)first,2));
+        qDebug()<<"giden data  = "<<bytes1;
+        serialWrite(bytes1);
+        qDebug()<<RFID;
+    }
+
 }
 
 
 void MainWindow::on_remove_clicked()
 {
-    QString addtag ="0202";
-    QByteArray bytes1 = QByteArray::fromHex(addtag.toLocal8Bit());
-    QString RFID =ui->rfiddata->toPlainText();
-    bytes1.append(QByteArray::fromHex(RFID.toLocal8Bit()));
-    uint16_t test;
-    test = CRC(bytes1,6);
-    uint8_t first[2];
-    first[0]= (0xFF)&(test>>8);
-    first[1]=(0xFF)&test;
-    bytes1.append(QByteArray::fromRawData((const char *)first,2));
-    qDebug()<<"giden data  = "<<bytes1;
-    serialWrite(bytes1);
-    qDebug()<<RFID;
+    if(ui->rfiddata->text().length() == 0){
+        qDebug("BOŞ");
+        QMessageBox msgBox; msgBox.setText(tr("Lütfen Boş Veri Göndermeyiniz"));
+        msgBox.addButton(tr("Tamam"), QMessageBox::NoRole);
+        msgBox.exec();
+    }
+
+    else{
+        QString addtag ="0202";
+        QByteArray bytes1 = QByteArray::fromHex(addtag.toLocal8Bit());
+        QString RFID =ui->rfiddata->text();
+        bytes1.append(QByteArray::fromHex(RFID.toLocal8Bit()));
+        uint16_t test;
+        test = CRC(bytes1,6);
+        uint8_t first[2];
+        first[0]= (0xFF)&(test>>8);
+        first[1]=(0xFF)&test;
+        bytes1.append(QByteArray::fromRawData((const char *)first,2));
+        qDebug()<<"giden data  = "<<bytes1;
+        serialWrite(bytes1);
+        qDebug()<<RFID;
+    }
+
 }
 
 
 void MainWindow::on_allremove_clicked()
 {
-    QString addtag ="0203464b7f41";
-    QByteArray bytes1 = QByteArray::fromHex(addtag.toLocal8Bit());
-    uint16_t test;
-    test = CRC(bytes1,6);
-    uint8_t first[2];
-    first[0]= (0xFF)&(test>>8);
-    first[1]=(0xFF)&test;
-    bytes1.append(QByteArray::fromRawData((const char *)first,2));
-    qDebug()<<"giden data  = "<<bytes1;
-    serialWrite(bytes1);
 
+    QMessageBox msgBox; msgBox.setText(tr("Bütün RFID Kartları silmek istediğinize emin misiniz?")); QAbstractButton* pButtonYes = msgBox.addButton(tr("EVET"), QMessageBox::YesRole); msgBox.addButton(tr("HAYIR"), QMessageBox::NoRole);
+
+   msgBox.exec();
+
+   if (msgBox.clickedButton()==pButtonYes) {
+
+      //Execute command
+       QString addtag ="0203464b7f41";
+       QByteArray bytes1 = QByteArray::fromHex(addtag.toLocal8Bit());
+       uint16_t test;
+       test = CRC(bytes1,6);
+       uint8_t first[2];
+       first[0]= (0xFF)&(test>>8);
+       first[1]=(0xFF)&test;
+       bytes1.append(QByteArray::fromRawData((const char *)first,2));
+       qDebug()<<"giden data  = "<<bytes1;
+       serialWrite(bytes1);
+
+   }
+   else{
+    //do nothing
+   }
 }
 
 
@@ -136,14 +169,14 @@ void MainWindow::on_connect_clicked()
         serial1->setParity(QSerialPort::NoParity);
         serial1->setStopBits(QSerialPort::OneStop);
         serial1->setFlowControl(QSerialPort::NoFlowControl);
-        ui->label->setText("Connection Succes!");
+        ui->label->setText("Bağlantı KURULDU");
 
     }
 
     else
     {
         qDebug("FALSE") ;
-        ui->label->setText("Connection Failed!");
+        ui->label->setText("Bağlantı BAŞARISIZ");
     }
 
 }
@@ -201,12 +234,12 @@ void MainWindow::serialRead()
        qDebug("Function add ");
        if(serialBuffer.at(1) == 0x01){
        qDebug("add rfid succes ");
-       ui->label->setText("SUCCESS");
+       ui->statusbar->showMessage("BAŞARILI");
        }
        else{
            qDebug("add rfid false ");
-           ui->label->setText("FAİL");
-           ui->label->setStyleSheet("color: rgb(239, 41, 41);");
+           ui->statusbar->showMessage("BAŞARISIZ");
+
        }
 
        }
@@ -215,12 +248,11 @@ void MainWindow::serialRead()
        qDebug("Function remove ");
        if(serialBuffer.at(1) == 0x01){
        qDebug("remove rfid succes ");
-       ui->label->setText("SUCCESS");
+       ui->statusbar->showMessage("BAŞARILI");
        }
        else{
            qDebug("remove rfid false ");
-           ui->label->setText("FAİL");
-           ui->label->setStyleSheet("color: rgb(239, 41, 41);");
+           ui->statusbar->showMessage("BAŞARISIZ");
        }
 
        }
@@ -229,12 +261,11 @@ void MainWindow::serialRead()
        qDebug("Function delete all ");
        if(serialBuffer.at(1) == 0x01){
        qDebug("delete all rfid succes ");
-       ui->label->setText("SUCCESS");
+       ui->statusbar->showMessage("BAŞARILI");
        }
        else{
            qDebug("delete all rfid false ");
-           ui->label->setText("FAİL");
-           ui->label->setStyleSheet("color: rgb(239, 41, 41);");
+           ui->statusbar->showMessage("BAŞARISIZ");
        }
 
        }
