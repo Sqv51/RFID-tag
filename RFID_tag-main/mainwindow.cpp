@@ -181,7 +181,7 @@ void MainWindow::serialWrite(QByteArray message)
 
 
 
- void MainWindow::serialRead()
+void MainWindow::serialRead()
 {
 
 
@@ -192,8 +192,52 @@ void MainWindow::serialWrite(QByteArray message)
         qDebug()<<"Gelen data orjinal: "<<serialBuffer.toHex();
 
 
+
+
     }
     if( serialBuffer.length() == 4 ){
+       if(serialBuffer.at(0) == 0x01)
+       {
+       qDebug("Function add ");
+       if(serialBuffer.at(1) == 0x01){
+       qDebug("add rfid succes ");
+       ui->label->setText("SUCCESS");
+       }
+       else{
+           qDebug("add rfid false ");
+           ui->label->setText("FAİL");
+           ui->label->setStyleSheet("color: rgb(239, 41, 41);");
+       }
+
+       }
+       if(serialBuffer.at(0) == 0x02)
+       {
+       qDebug("Function remove ");
+       if(serialBuffer.at(1) == 0x01){
+       qDebug("remove rfid succes ");
+       ui->label->setText("SUCCESS");
+       }
+       else{
+           qDebug("remove rfid false ");
+           ui->label->setText("FAİL");
+           ui->label->setStyleSheet("color: rgb(239, 41, 41);");
+       }
+
+       }
+       if(serialBuffer.at(0) == 0x03)
+       {
+       qDebug("Function delete all ");
+       if(serialBuffer.at(1) == 0x01){
+       qDebug("delete all rfid succes ");
+       ui->label->setText("SUCCESS");
+       }
+       else{
+           qDebug("delete all rfid false ");
+           ui->label->setText("FAİL");
+           ui->label->setStyleSheet("color: rgb(239, 41, 41);");
+       }
+
+       }
 
         serialBuffer.clear();
 
